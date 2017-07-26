@@ -28,44 +28,45 @@ def asyncLoadTumblr(imgListQ, f_hwnd):
     postMessage(f_hwnd, loadImgListMsg, 0, 0)
     return
 
+async def work(q2,imgDoneQ,f_hwnd):
+    # print('work',d)
+    # await asyncio.sleep(2)
+    # await q.put( {'id':d['id'],'fpath':d['fpath']} )
+    # tumblrCtrl.downloadImg(d['http'], d['fpath'])
+    # postMessage(f_hwnd, loadImgMsg, 0, 0)
+    # return
+    for i in range(q2.qsize()):
+    # while True:
+        print(i)
+        if not q2.empty():
+            d = await q2.get()
+            print(d)
+            # tumblrCtrl.downloadImg(d['http'], d['fpath'])
+            imgDoneQ.put( {'id':d['id'],'fpath':d['fpath']} )
+            postMessage(f_hwnd, loadImgMsg, 0, 0)
+
+async def run(imgDoneQ, t, f_hwnd):
+    q2 = asQ()
+    # tasks = []
+    await asyncio.wait([q2.put(i) for i in t])
+    tasks = [asyncio.ensure_future(work(q2,imgDoneQ,f_hwnd))]
+    # for d in t:
+        # tasks.append( asyncio.ensure_future(work(q, d)) )
+    # asyncio.wait(tasks)
+    print('wait join')
+    await q2.join()
+    # postMessage(f_hwnd, loadImgMsg, 0, 0)
+    print('end join')
+    for task in tasks:
+        task.cancel()
+
 def asyncImgList(imgDoneQ, t, f_hwnd):
-    async def work(q2):
-        # print('work',d)
-        # await asyncio.sleep(2)
-        # await q.put( {'id':d['id'],'fpath':d['fpath']} )
-        # tumblrCtrl.downloadImg(d['http'], d['fpath'])
-        # postMessage(f_hwnd, loadImgMsg, 0, 0)
-        # return
-        for i in range(q2.qsize()):
-        # while True:
-            if not q2.empty():
-                d = await q2.get()
-                print(d)
-                # tumblrCtrl.downloadImg(d['http'], d['fpath'])
-                # imgDoneQ.put( {'id':d['id'],'fpath':d['fpath']} )
-                # postMessage(f_hwnd, loadImgMsg, 0, 0)
-
-    async def run():
-        q2 = asQ()
-        # tasks = []
-        await asyncio.wait([q2.put(i) for i in t])
-        tasks = [asyncio.ensure_future(work(q2))]
-        # for d in t:
-            # tasks.append( asyncio.ensure_future(work(q, d)) )
-        # asyncio.wait(tasks)
-        print('wait join')
-        await q2.join()
-        postMessage(f_hwnd, loadImgMsg, 0, 0)
-        print('end join')
-        for task in tasks:
-            task.cancel()
-
     print('asyncImgList')
     loop = asyncio.get_event_loop()
     # loop.run_until_complete(run())
     # loop.close()
     try:
-        loop.run_until_complete(run())
+        loop.run_until_complete(run(imgDoneQ, t, f_hwnd))
     except Exception as e:
         # print(asyncio.Task.all_tasks())
         # print(asyncio.gather(*asyncio.Task.all_tasks()).cancel())
@@ -127,7 +128,8 @@ class Frame(sciter.Window):
         elif msg == loadImgMsg:
             print('loadImgMsg')
             if not self.imgDoneQ.empty():
-                print(self.imgDoneQ.get())
+                # print(self.imgDoneQ.get())
+                return self.setImgBg( self.imgDoneQ.get() )
 
     def eachImgList(self, img_list ):
         print('eachImgList')
@@ -151,9 +153,11 @@ class Frame(sciter.Window):
                 # html = htmlTemplate.format( d['id'], file_path, d['original_size'], d['preview_size'] )
                 # self.call_function('appendImgList', html )
                 pass
-            self.pool.apply_async(asyncImgList,args=(self.imgDoneQ, tasks, self.hwnd))
+        self.pool.apply_async(asyncImgList,args=(self.imgDoneQ, tasks, self.hwnd))
 
         return
+    def setImgBg(self, d):
+        self.call_function('setImgBg', d['id'], d['fpath'] )
 
     def setTumblrLi(self):
         html = ''

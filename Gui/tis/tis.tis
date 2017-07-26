@@ -18,12 +18,16 @@ self.ready = function() {
     $(#tumblr).on("click",function(){
         view.loadTumblr();
     })
+    $(li[imgid="163313406078[1]"]).text = "1234";
 }
 function appendImgLoading( html ){
     self.$(#ul).append(html);
 }
 function setImgId( id ){
     var li = $(li.loading);
-    li.@#id = id;
-    li.@.removeClass("loading");
+    li.@#imgid = id;
+    // li.@.removeClass("loading");
+}
+function setImgBg( id, path ){
+    $(li[imgid={id.toString()}]).text = path;
 }
