@@ -2,8 +2,10 @@
 import json
 import sciter
 import ctypes
-import win32con
+# import win32con
 # import os
+
+from win32con import WM_USER
 
 from os import path as osPath, getcwd
 from multiprocessing import Process,Pool,Manager
@@ -14,8 +16,8 @@ from asyncio import Queue as asQ
 
 ctypes.windll.user32.SetProcessDPIAware(2)
 postMessage = ctypes.windll.user32.PostMessageW
-loadImgListMsg = win32con.WM_USER+10
-loadImgMsg = win32con.WM_USER+20
+loadImgListMsg = WM_USER+10
+loadImgMsg = WM_USER+20
 
 def asyncLoadTumblr(imgListQ, f_hwnd):
     print("asyncLoadTumblr")
