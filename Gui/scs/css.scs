@@ -1,0 +1,44 @@
+@import "common.scs";
+@mixin LI-BACKGROUND {
+  background-attachment: scroll;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+ul {
+    /*prototype: UlCtrl url("ulctrl.tis");*/
+    flow: horizontal-wrap;
+    border-spacing: 10dip;
+    size: *;
+    overflow: hidden;
+    overflow-y: scroll-indicator;
+    /*overflow-y: scroll;*/
+    /*overflow-y: scroll scroll-manner(wheel-animation:false, wheel-step:@list-h);*/
+    /*overflow-y: scroll scroll-manner(wheel-animation:false);*/
+
+    padding: 5dip;
+    background: @light_gray;
+}
+
+li {
+    /*prototype: loadImageToLi url("loadimagetoli.tis");*/
+    /*prototype: loadImageToLi;*/
+    /*aspect: loadImageToLi url("loadimagetoli.tis");*/
+    width: 270px;
+    height: 320px;
+    border-radius: 5dip;
+    /*background: gold;*/
+    /*style-set: set-background;*/
+    @LI-BACKGROUND;
+    background-color: #ffffff;
+    background-size: contain;
+    box-shadow: 1px 2px 5px -1px rgba(0, 0, 0, .3);
+    /*background-image :url(icon.png);*/
+    position: relative;
+    overflow: hidden;
+    /*cursor:url(img/magnifier.svg) 48 48;*/
+    /*cursor:url(img/cursor.png) 25 25;*/
+}
+li.loading{
+    background-image: url(../img/loading.png);
+    background-size: auto;
+}
