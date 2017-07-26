@@ -2,6 +2,8 @@
 import json
 import sciter
 import ctypes
+import random
+import time
 # import win32con
 # import os
 
@@ -35,15 +37,17 @@ async def work(q2,imgDoneQ,f_hwnd):
     # tumblrCtrl.downloadImg(d['http'], d['fpath'])
     # postMessage(f_hwnd, loadImgMsg, 0, 0)
     # return
-    for i in range(q2.qsize()):
-    # while True:
-        print(i)
-        if not q2.empty():
-            d = await q2.get()
-            print(d)
+    # for i in range(q2.qsize()):
+    while True:
+        # print(i)
+        d = await q2.get()
+        time.sleep( random.randint(1,5) )
+        try:
             # tumblrCtrl.downloadImg(d['http'], d['fpath'])
             imgDoneQ.put( {'id':d['id'],'fpath':d['fpath']} )
             postMessage(f_hwnd, loadImgMsg, 0, 0)
+        finally:
+            q2.task_done()
 
 async def run(imgDoneQ, t, f_hwnd):
     q2 = asQ()
@@ -74,6 +78,7 @@ def asyncImgList(imgDoneQ, t, f_hwnd):
         loop.run_forever()
     finally:
         loop.close()
+    print('end')
 
 
 class Frame(sciter.Window):
@@ -131,15 +136,23 @@ class Frame(sciter.Window):
                 # print(self.imgDoneQ.get())
                 return self.setImgBg( self.imgDoneQ.get() )
 
+    def document_close(self):
+        print("close")
+        self.pool.close()
+        self.pool.join()
+        return True
+
     def eachImgList(self, img_list ):
         print('eachImgList')
         # self.q1 = Manager().Queue()
         tasks = []
+        i = 0
         for d in img_list:
             # print(d)
             file_name = d['id'] + '_' + d['alt_sizes'].split("_")[-1]
             file_path = osPath.join( self.target_folder, file_name )
-            self.call_function('setImgId', d['id'] )
+            self.call_function('setImgId', d['id'], i )
+            i+=1
             if not osPath.isfile(file_path):
                 print(file_path)
                 # html = htmlTemplate.format( d['id'], 'img/loading.png', d['original_size'], d['preview_size'] )
@@ -164,7 +177,7 @@ class Frame(sciter.Window):
         limit = self.cfg['tumblr']['dashboard_param']['limit']
         i = 0
         while i < limit:
-            html += '<li.loading></li>'
+            html += '<li.loading imgid="' + str(i) + '"></li>'
             i += 1
         self.call_function('appendImgLoading', html )
         pass

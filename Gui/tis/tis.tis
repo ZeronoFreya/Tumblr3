@@ -18,16 +18,18 @@ self.ready = function() {
     $(#tumblr).on("click",function(){
         view.loadTumblr();
     })
-    $(li[imgid="163313406078[1]"]).text = "1234";
+    // $(li[imgid="163313406078[1]"]).text = "1234";
 }
 function appendImgLoading( html ){
     self.$(#ul).append(html);
 }
-function setImgId( id ){
-    var li = $(li.loading);
-    li.@#imgid = id;
+function setImgId( id, i ){
+    $(li.loading[imgid="{i}"]).@#imgid = id;
+    // li.@#imgid = id;
     // li.@.removeClass("loading");
 }
 function setImgBg( id, path ){
-    $(li[imgid={id.toString()}]).text = path;
+    var li = $(li[imgid="{id}"]);
+    li.text = path %~ "\\";
+    li.@.removeClass("loading");
 }
