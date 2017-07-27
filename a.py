@@ -20,7 +20,7 @@ async def work(q2):
         #     q2.task_done()
         d = await q2.get()
         r = random.randint(1,5)
-        time.sleep( r )
+        await asyncio.sleep( r )
         try:
             print(r,d)
         finally:

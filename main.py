@@ -20,65 +20,112 @@ ctypes.windll.user32.SetProcessDPIAware(2)
 postMessage = ctypes.windll.user32.PostMessageW
 loadImgListMsg = WM_USER+10
 loadImgMsg = WM_USER+20
+loadtest = WM_USER+30
 
 def asyncLoadTumblr(imgListQ, f_hwnd):
     print("asyncLoadTumblr")
     # imgList = tumblrCtrl.loadImgList()
-    imgList = [{'link_url': 'http://kitkhsh69.tumblr.com/tagged/%E6%9F%B3%E7%BE%8E%E7%A8%80', 'source_url': '', 'id': '163313406078[1]', 'original_size': 'https://68.media.tumblr.com/8f64f8f7885f57b02b66d59695d21003/tumblr_otcacsCHN21qgdydto1_1280.jpg', 'preview_size': 'https://68.media.tumblr.com/8f64f8f7885f57b02b66d59695d21003/tumblr_otcacsCHN21qgdydto1_400.jpg', 'alt_sizes': 'https://68.media.tumblr.com/8f64f8f7885f57b02b66d59695d21003/tumblr_otcacsCHN21qgdydto1_250.jpg'}, {'link_url': '', 'source_url': 'https://yamato2520.tumblr.com/post/163247811228/yurina-ゆりな', 'id': '163313235630[1]', 'original_size': 'https://68.media.tumblr.com/c663f97b89bd8ce44cf8d1bc777ed580/tumblr_otfszhN3Qf1s3f5u5o1_1280.jpg', 'preview_size': 'https://68.media.tumblr.com/c663f97b89bd8ce44cf8d1bc777ed580/tumblr_otfszhN3Qf1s3f5u5o1_400.jpg', 'alt_sizes': 'https://68.media.tumblr.com/c663f97b89bd8ce44cf8d1bc777ed580/tumblr_otfszhN3Qf1s3f5u5o1_250.jpg'}, {'link_url': 'http://www.dmm.co.jp/digital/videoa/-/detail/=/cid=snis00944/loltumblrlol-001', 'source_url': '', 'id': '163312030869[1]', 'original_size': 'https://68.media.tumblr.com/a2761ea359be62d2cdf4aab6547db9cc/tumblr_ot4b4vpkhD1qgdydto1_540.jpg', 'preview_size': 'https://68.media.tumblr.com/a2761ea359be62d2cdf4aab6547db9cc/tumblr_ot4b4vpkhD1qgdydto1_400.jpg', 'alt_sizes': 'https://68.media.tumblr.com/a2761ea359be62d2cdf4aab6547db9cc/tumblr_ot4b4vpkhD1qgdydto1_250.jpg'}, {'link_url': '', 'source_url': 'https://yamato2520.tumblr.com/post/163247439028/yuikawa-misaki-唯川みさき', 'id': '163311979203[1]', 'original_size': 'https://68.media.tumblr.com/a4696ec707a8e12f5be2850cffcfe1bf/tumblr_otfs0tb7yq1s3f5u5o1_1280.jpg', 'preview_size': 'https://68.media.tumblr.com/a4696ec707a8e12f5be2850cffcfe1bf/tumblr_otfs0tb7yq1s3f5u5o1_400.jpg', 'alt_sizes': 'https://68.media.tumblr.com/a4696ec707a8e12f5be2850cffcfe1bf/tumblr_otfs0tb7yq1s3f5u5o1_250.jpg'}, {'link_url': 'http://img.bakufu.jp/wp-content/uploads/2017/07/170714b_0012.jpg', 'source_url': 'http://destrudo.tumblr.com/post/163247366353/170714b0012jpg', 'id': '163310726341[1]', 'original_size': 'https://68.media.tumblr.com/e22b9d2bb31d4c582d889b79b8001d2e/tumblr_ot2n98vTa91qz9aigo1_1280.jpg', 'preview_size': 'https://68.media.tumblr.com/e22b9d2bb31d4c582d889b79b8001d2e/tumblr_ot2n98vTa91qz9aigo1_400.jpg', 'alt_sizes': 'https://68.media.tumblr.com/e22b9d2bb31d4c582d889b79b8001d2e/tumblr_ot2n98vTa91qz9aigo1_250.jpg'}]
+    imgList = [{
+        'link_url': 'xx',
+        'source_url': '',
+        'id': str( random.randint(1,999999) ),
+        'original_size': 'xx',
+        'preview_size': 'x',
+        'alt_sizes': 'x'
+    },{
+        'link_url': 'xx',
+        'source_url': '',
+        'id': str( random.randint(1,999999) ),
+        'original_size': 'xx',
+        'preview_size': 'x',
+        'alt_sizes': 'x'
+    },{
+        'link_url': 'xx',
+        'source_url': '',
+        'id': str( random.randint(1,999999) ),
+        'original_size': 'xx',
+        'preview_size': 'x',
+        'alt_sizes': 'x'
+    },{
+        'link_url': 'xx',
+        'source_url': '',
+        'id': str( random.randint(1,999999) ),
+        'original_size': 'xx',
+        'preview_size': 'x',
+        'alt_sizes': 'x'
+    },{
+        'link_url': 'xx',
+        'source_url': '',
+        'id': str( random.randint(1,999999) ),
+        'original_size': 'xx',
+        'preview_size': 'x',
+        'alt_sizes': 'x'
+    }]
     imgListQ.put( imgList )
     # eachImgList( imgList )
     postMessage(f_hwnd, loadImgListMsg, 0, 0)
     return
 
-async def work(q2,imgDoneQ,f_hwnd):
-    # print('work',d)
-    # await asyncio.sleep(2)
-    # await q.put( {'id':d['id'],'fpath':d['fpath']} )
-    # tumblrCtrl.downloadImg(d['http'], d['fpath'])
-    # postMessage(f_hwnd, loadImgMsg, 0, 0)
-    # return
-    # for i in range(q2.qsize()):
-    while True:
-        # print(i)
-        d = await q2.get()
-        time.sleep( random.randint(1,5) )
-        try:
-            # tumblrCtrl.downloadImg(d['http'], d['fpath'])
-            imgDoneQ.put( {'id':d['id'],'fpath':d['fpath']} )
-            postMessage(f_hwnd, loadImgMsg, 0, 0)
-        finally:
-            q2.task_done()
+# async def work(q2,imgDoneQ,f_hwnd):
+#     # print('work',d)
+#     # await asyncio.sleep(2)
+#     # await q.put( {'id':d['id'],'fpath':d['fpath']} )
+#     # tumblrCtrl.downloadImg(d['http'], d['fpath'])
+#     # postMessage(f_hwnd, loadImgMsg, 0, 0)
+#     # return
+#     # for i in range(q2.qsize()):
+#     while True:
+#         # print(i)
+#         d = await q2.get()
+#         time.sleep( random.randint(1,5) )
+#         try:
+#             # tumblrCtrl.downloadImg(d['http'], d['fpath'])
+#             imgDoneQ.put( {'id':d['id'],'fpath':d['fpath']} )
+#             postMessage(f_hwnd, loadImgMsg, 0, 0)
+#         finally:
+#             q2.task_done()
 
-async def run(imgDoneQ, t, f_hwnd):
-    q2 = asQ()
-    # tasks = []
-    await asyncio.wait([q2.put(i) for i in t])
-    tasks = [asyncio.ensure_future(work(q2,imgDoneQ,f_hwnd))]
-    # for d in t:
-        # tasks.append( asyncio.ensure_future(work(q, d)) )
-    # asyncio.wait(tasks)
-    print('wait join')
-    await q2.join()
-    # postMessage(f_hwnd, loadImgMsg, 0, 0)
-    print('end join')
-    for task in tasks:
-        task.cancel()
+# async def run(imgDoneQ, t, f_hwnd):
+#     q2 = asQ()
+#     # tasks = []
+#     await asyncio.wait([q2.put(i) for i in t])
+#     tasks = [asyncio.ensure_future(work(q2,imgDoneQ,f_hwnd))]
+#     # for d in t:
+#         # tasks.append( asyncio.ensure_future(work(q, d)) )
+#     # asyncio.wait(tasks)
+#     print('wait join')
+#     await q2.join()
+#     # postMessage(f_hwnd, loadImgMsg, 0, 0)
+#     print('end join')
+#     for task in tasks:
+#         task.cancel()
+
+async def wget(imgDoneQ, d, f_hwnd):
+    r = random.randint(1,5)
+    await asyncio.sleep( r )
+    # print( r, host )
+    imgDoneQ.put( {'id':d['id'],'fpath':d['fpath']} )
+    postMessage(f_hwnd, loadImgMsg, 0, 0)
+    return
 
 def asyncImgList(imgDoneQ, t, f_hwnd):
     print('asyncImgList')
     loop = asyncio.get_event_loop()
-    # loop.run_until_complete(run())
-    # loop.close()
+    tasks = [wget(imgDoneQ, d, f_hwnd) for d in t]
     try:
-        loop.run_until_complete(run(imgDoneQ, t, f_hwnd))
+        loop.run_until_complete( asyncio.wait(tasks) )
     except Exception as e:
-        # print(asyncio.Task.all_tasks())
-        # print(asyncio.gather(*asyncio.Task.all_tasks()).cancel())
+        # print('0',asyncio.Task.all_tasks())
+        # print('1',asyncio.gather(*asyncio.Task.all_tasks()).cancel())
         loop.stop()
         loop.run_forever()
     finally:
         loop.close()
     print('end')
+    # for task in tasks:
+        # task.cancel()
+    # postMessage(f_hwnd, loadtest, 0, 0)
+    return
 
 
 class Frame(sciter.Window):
@@ -100,6 +147,7 @@ class Frame(sciter.Window):
         print('Over')
         print('开启进程池...')
         self.pool = Pool(processes=1)
+        # self.pool = Pool()
         print('Over')
         self.current_folder = getcwd()
         self.target_folder = osPath.join(self.current_folder, 'imgTemp')
@@ -129,16 +177,27 @@ class Frame(sciter.Window):
             if not self.imgListQ.empty():
                 # print(self.q.get())
                 # return
+                # self.pool.terminate()
                 return self.eachImgList( self.imgListQ.get() )
         elif msg == loadImgMsg:
             print('loadImgMsg')
-            if not self.imgDoneQ.empty():
+            # if not self.imgDoneQ.empty():
                 # print(self.imgDoneQ.get())
-                return self.setImgBg( self.imgDoneQ.get() )
+                # return self.setImgBg( self.imgDoneQ.get() )
+            d = self.imgDoneQ.get()
+            # print(d)
+            try:
+                self.setImgBg( d['id'], d['fpath'] )
+            finally:
+                self.imgDoneQ.task_done()
+        elif msg == loadtest:
+            print("loadtest")
+            self.pool.close()
 
     def document_close(self):
         print("close")
         self.pool.close()
+        # self.pool.terminate()
         self.pool.join()
         return True
 
@@ -169,8 +228,9 @@ class Frame(sciter.Window):
         self.pool.apply_async(asyncImgList,args=(self.imgDoneQ, tasks, self.hwnd))
 
         return
-    def setImgBg(self, d):
-        self.call_function('setImgBg', d['id'], d['fpath'] )
+    def setImgBg(self, id, fpath):
+        print('setImgBg')
+        self.call_function('setImgBg', id, fpath )
 
     def setTumblrLi(self):
         html = ''
@@ -182,6 +242,8 @@ class Frame(sciter.Window):
         self.call_function('appendImgLoading', html )
         pass
     def loadTumblr(self):
+        # self.pool.terminate()
+        # self.pool = Pool(processes=1)
         self.setTumblrLi()
         self.pool.apply_async(asyncLoadTumblr,args=(self.imgListQ, self.hwnd))
         pass
