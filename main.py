@@ -10,11 +10,12 @@ import time
 from win32con import WM_USER
 
 from os import path as osPath, getcwd
-from multiprocessing import Process,Pool,Manager
+# from multiprocessing import Process,Pool,Manager
+from multiprocessing import Process,Queue
 # from threading import Thread
 
 import asyncio
-from asyncio import Queue as asQ
+# from asyncio import Queue as asQ
 
 ctypes.windll.user32.SetProcessDPIAware(2)
 postMessage = ctypes.windll.user32.PostMessageW
@@ -124,7 +125,7 @@ def asyncImgList(imgDoneQ, t, f_hwnd):
     print('end')
     # for task in tasks:
         # task.cancel()
-    # postMessage(f_hwnd, loadtest, 0, 0)
+    postMessage(f_hwnd, loadtest, 0, 0)
     return
 
 
@@ -142,13 +143,15 @@ class Frame(sciter.Window):
     def _document_ready(self, target):
         # Set window title based on <title> content, if any
         print('创建队列...')
-        self.imgListQ = Manager().Queue(1)
-        self.imgDoneQ = Manager().Queue(50)
+        # self.imgListQ = Manager().Queue(1)
+        self.imgListQ = Queue(1)
+        # self.imgDoneQ = Manager().Queue(50)
+        self.imgDoneQ = Queue(50)
         print('Over')
-        print('开启进程池...')
-        self.pool = Pool(processes=1)
+        # print('开启进程池...')
+        # self.pool = Pool(processes=1)
         # self.pool = Pool()
-        print('Over')
+        # print('Over')
         self.current_folder = getcwd()
         self.target_folder = osPath.join(self.current_folder, 'imgTemp')
         # self.target_folder='imgTemp'
@@ -188,17 +191,19 @@ class Frame(sciter.Window):
             # print(d)
             try:
                 self.setImgBg( d['id'], d['fpath'] )
-            finally:
-                self.imgDoneQ.task_done()
+            except Exception as e:
+                raise e
+            # finally:
+                # self.imgDoneQ.task_done()
         elif msg == loadtest:
             print("loadtest")
-            self.pool.close()
+            # self.pool.close()
 
     def document_close(self):
         print("close")
-        self.pool.close()
+        # self.pool.close()
         # self.pool.terminate()
-        self.pool.join()
+        # self.pool.join()
         return True
 
     def eachImgList(self, img_list ):
@@ -225,7 +230,9 @@ class Frame(sciter.Window):
                 # html = htmlTemplate.format( d['id'], file_path, d['original_size'], d['preview_size'] )
                 # self.call_function('appendImgList', html )
                 pass
-        self.pool.apply_async(asyncImgList,args=(self.imgDoneQ, tasks, self.hwnd))
+        # self.pool.apply_async(asyncImgList,args=(self.imgDoneQ, tasks, self.hwnd))
+        p = Process(target=asyncImgList, args=(self.imgDoneQ, tasks, self.hwnd))
+        p.start()
 
         return
     def setImgBg(self, id, fpath):
@@ -245,7 +252,9 @@ class Frame(sciter.Window):
         # self.pool.terminate()
         # self.pool = Pool(processes=1)
         self.setTumblrLi()
-        self.pool.apply_async(asyncLoadTumblr,args=(self.imgListQ, self.hwnd))
+        # self.pool.apply_async(asyncLoadTumblr,args=(self.imgListQ, self.hwnd))
+        p = Process(target=asyncLoadTumblr, args=(self.imgListQ, self.hwnd))
+        p.start()
         pass
 
 if __name__ == '__main__':
