@@ -8,6 +8,12 @@
     src: url("fonts/exo2regular.ttf");
 }
 
+@mixin LI-BACKGROUND {
+  background-attachment: scroll;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
 html,body,header,caption, widget, section, h1, h2, h3, h4, h5, h6, hr,
 p, a, blockquote, dl, dt, dd, ul,
 ol, li, pre, form, fieldset, legend,

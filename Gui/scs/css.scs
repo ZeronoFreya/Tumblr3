@@ -1,10 +1,53 @@
 @import "common.scs";
-@mixin LI-BACKGROUND {
-  background-attachment: scroll;
-  background-repeat: no-repeat;
-  background-position: center center;
+widget#widget{
+    position: relative;
 }
-ul {
+aside{
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 32dip;
+    background: @BGCOLOR-WHITE;
+    /*border-right: 1px @BORDERCOLOR solid;*/
+}
+aside:hover{
+    width:100dip;
+}
+aside:hover #sites-nav{
+    padding: 0.5em;
+    /*border-spacing:0.5em;*/
+}
+main{
+    size: *;
+    margin-left: 40dip;
+}
+#sites-nav {
+    display:block;
+    width: *;
+    height: *;
+    flow:vertical;
+    padding: 0.2em;
+    border-spacing:0.5em;
+}
+#sites-nav label{
+    display:block;
+    box-shadow: 1px 2px 5px -1px rgba(0, 0, 0, .3);
+    width: *;
+    height: width(100%);
+    border-radius: 5dip;
+    overflow: hidden;
+}
+#sites-panel{
+    size: *;
+    display:block;
+}
+#sites-panel panel{
+    width: 100%;
+    height: *;
+    display:block;
+}
+#ul {
     /*prototype: UlCtrl url("ulctrl.tis");*/
     flow: horizontal-wrap;
     border-spacing: 10dip;
@@ -19,7 +62,7 @@ ul {
     background: @light_gray;
 }
 
-li {
+#ul li {
     /*prototype: loadImageToLi url("loadimagetoli.tis");*/
     /*prototype: loadImageToLi;*/
     /*aspect: loadImageToLi url("loadimagetoli.tis");*/
@@ -38,7 +81,7 @@ li {
     /*cursor:url(img/magnifier.svg) 48 48;*/
     /*cursor:url(img/cursor.png) 25 25;*/
 }
-li.loading{
+#ul li.loading{
     background-image: url(../img/loading.png);
     background-size: auto;
 }

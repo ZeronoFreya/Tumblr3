@@ -5,13 +5,27 @@
 <script type="text/tiscript" src="tis/tis.tis"></script>
 </head>
 <body>
-<button#tumblr>Tumblr</button>
+<!-- <button#tumblr>Tumblr</button> -->
 <widget#widget>
-<include src="titlebar.html" />
-<section#body>
-    <ul#ul></ul>
-</section>
-<include src="statusbar.html" />
+<aside>
+    <labels#sites-nav>
+        <label#tumblr>Tumblr</label>
+        <label>Y</label>
+    </labels>
+</aside>
+<main>
+    <include src="titlebar.html" />
+    <panels#sites-panel>
+        <panel>
+            <ul#ul></ul>
+        </panel>
+        <panel>
+            Y
+        </panel>
+    </panels>
+    <include src="statusbar.html" />
+</main>
+
 </widget>
 </body>
 

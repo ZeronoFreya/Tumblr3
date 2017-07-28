@@ -16,7 +16,7 @@ self.ready = function() {
     // }
     // ul.postEvent("is-scroll");
     $(#tumblr).on("click",function(){
-        view.loadTumblr();
+        // view.loadTumblr();
     })
     // $(li[imgid="163313406078[1]"]).text = "1234";
 }
