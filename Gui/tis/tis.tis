@@ -15,9 +15,9 @@ self.ready = function() {
     //     ul.$append(<li>{i}</li>);
     // }
     // ul.postEvent("is-scroll");
-    $(#tumblr).on("click",function(){
+    // $(#tumblr).on("click",function(){
         // view.loadTumblr();
-    })
+    // })
     // $(li[imgid="163313406078[1]"]).text = "1234";
 }
 function appendImgLoading( html ){

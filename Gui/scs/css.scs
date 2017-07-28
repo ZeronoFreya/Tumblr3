@@ -7,14 +7,15 @@ aside{
     top: 0;
     left: 0;
     bottom: 0;
-    width: 32dip;
+    width: 36dip;
+    padding-top: 32dip;
+    padding-bottom: 32dip;
     background: @BGCOLOR-WHITE;
-    /*border-right: 1px @BORDERCOLOR solid;*/
 }
-aside:hover{
+aside2:hover{
     width:100dip;
 }
-aside:hover #sites-nav{
+aside2:hover #sites-nav{
     padding: 0.5em;
     /*border-spacing:0.5em;*/
 }
@@ -27,8 +28,11 @@ main{
     width: *;
     height: *;
     flow:vertical;
-    padding: 0.2em;
+    padding: 0.4em;
+    /*padding-right: 0.4em;*/
     border-spacing:0.5em;
+    /*background: gold;*/
+    border-right: 1px @BORDERCOLOR solid;
 }
 #sites-nav label{
     display:block;
@@ -38,14 +42,47 @@ main{
     border-radius: 5dip;
     overflow: hidden;
 }
+#sites-nav label:current{
+    height: width(200%);
+}
 #sites-panel{
+    flow: stack;
+    overflow: hidden;
     size: *;
     display:block;
+    prototype: Tabs url("../tis/tabs.tis");
 }
-#sites-panel panel{
-    width: 100%;
-    height: *;
+#sites-panel > panel{
+    size: *;
     display:block;
+    visibility: hidden;
+    background: @BGCOLOR-WHITE;
+}
+#sites-panel > panel:current {
+    z-index: 1;
+    visibility: visible;
+}
+#sites-panel > panel[sliding=left]
+/* from left to right */
+{
+    opacity: 0;
+    transform: translate(-100%, 0);
+}
+#sites-panel > panel[sliding=right]
+/* from right to left*/
+{
+    opacity: 0;
+    transform: translate(100%, 0);
+}
+#sites-panel > panel[sliding=run] {
+    opacity: 1.0;
+    transform: translate(0%, 0);
+    transition: transform(cubic-out, 0.5s, none) opacity(linear, 0.5s, none);
+}
+
+#sites-panel > panel:animating {
+    z-index: 2;
+    visibility: visible;
 }
 #ul {
     /*prototype: UlCtrl url("ulctrl.tis");*/

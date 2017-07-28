@@ -27,12 +27,12 @@ function setMinSize( w, h ){
 view << event statechange {
     switch( view.state ){
         case View.WINDOW_MAXIMIZED :
-            $(#window-max).text = 2;
+            // $(#window-max).text = 2;
             $(#window-resize).style#display = "none";
             $(body).style#padding = 0;
             break;
         case View.WINDOW_SHOWN :
-            $(#window-max).text = 1;
+            // $(#window-max).text = 1;
             $(#window-resize).style#display = "block";
             $(body).style#padding = "5dip";
             break;
