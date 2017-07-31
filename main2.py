@@ -45,6 +45,7 @@ class Frame(sciter.Window):
         if not osPath.isdir(self.download_folder):
             osMkdir(self.download_folder)
         # print(self.cfg)
+        self.tumblrCtrl = None
 
     def _document_ready(self, target):
         return

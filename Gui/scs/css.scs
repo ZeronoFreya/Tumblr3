@@ -90,13 +90,17 @@ main{
 #tumblr{
     position: relative;
 }
-#tumblr-homepage{
+.tumblr-homepage{
     position: absolute;
     top: 0;
     right: 0;
     width: 100%;
     bottom: 0;
     /*background: gold;*/
+    overflow: hidden;
+}
+.tumblr-homepage-collapsed{
+    width: 0;
 }
 #ul {
     /*prototype: UlCtrl url("ulctrl.tis");*/
