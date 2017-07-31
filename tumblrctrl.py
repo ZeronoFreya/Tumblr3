@@ -1,7 +1,10 @@
 from multiprocessing import Process,Queue
 import ctypes
-import random
+# import random
+# import requests
+import aiohttp
 import asyncio
+from common import gets
 from os import path as osPath
 from json import load as JLoad
 from win32con import WM_USER
@@ -12,70 +15,99 @@ loadImgListMsg = WM_USER+10
 loadImgMsg = WM_USER+20
 loadtest = WM_USER+30
 
-async def wget(imgDoneQ, d, f_hwnd):
-    r = random.randint(1,3)
-    await asyncio.sleep( r )
-    # print( r, host )
+async def stream_download( client, imgDoneQ, d, f_hwnd, prox ):
+    async with client.get( d['http'], proxy='http://127.0.0.1:50175', timeout=10 ) as response:
+        if response.status != 200:
+            print('error')
+            return
+        with open(d['fpath'], 'ab') as file:
+            while True:
+                chunk = await response.content.read(1024)
+                if not chunk:
+                    break
+                file.write(chunk)
     imgDoneQ.put( {'id':d['id'],'fpath':d['fpath']} )
     postMessage(f_hwnd, loadImgMsg, 0, 0)
-    return
 
-def asyncImgList(imgDoneQ, t, f_hwnd):
+def asyncImgList(imgDoneQ, t, f_hwnd, proxies):
     print('asyncImgList')
+    client = aiohttp.ClientSession()
     loop = asyncio.get_event_loop()
-    tasks = [wget(imgDoneQ, d, f_hwnd) for d in t]
+    tasks = [stream_download(client, imgDoneQ, d, f_hwnd, proxies) for d in t]
     try:
         loop.run_until_complete( asyncio.wait(tasks) )
     except Exception as e:
-        # print('0',asyncio.Task.all_tasks())
-        # print('1',asyncio.gather(*asyncio.Task.all_tasks()).cancel())
+        print('0',asyncio.Task.all_tasks())
+        print('1',asyncio.gather(*asyncio.Task.all_tasks()).cancel())
         loop.stop()
         loop.run_forever()
     finally:
+        # loop.stop()
+        # loop.run_forever()
         loop.close()
     print('end')
-    postMessage(f_hwnd, loadtest, 0, 0)
+    # postMessage(f_hwnd, loadtest, 0, 0)
     return
 
-def asyncLoadTumblr(imgListQ, f_hwnd):
+def mkMainDict( d, preview_size, alt_sizes ):
+    data = []
+    for v in d["posts"]:
+        t = {
+            'link_url'        : gets(v, 'link_url', ''),
+            'source_url'        : gets(v, 'source_url', '')
+        }
+        index = 1
+        for i in v['photos']:
+            t['id'] = str(v['id']) + '[' + str(index) + ']'
+            t['original_size'] = gets(i, 'original_size.url', '')
+            t['preview_size'] = gets(i, 'alt_sizes.' + str(preview_size) + '.url', '')
+            t['alt_sizes'] = gets(i, 'alt_sizes.' + str(alt_sizes) + '.url', '')
+            data.append(t.copy())
+            index += 1
+    return data
+
+def asyncLoadTumblr(imgListQ, f_hwnd, tumblr, param):
+
     print("asyncLoadTumblr")
-    # imgList = tumblrCtrl.loadImgList()
-    imgList = [{
-        'link_url': 'xx',
-        'source_url': '',
-        'id': str( random.randint(1,999999) ),
-        'original_size': 'xx',
-        'preview_size': 'x',
-        'alt_sizes': 'x'
-    },{
-        'link_url': 'xx',
-        'source_url': '',
-        'id': str( random.randint(1,999999) ),
-        'original_size': 'xx',
-        'preview_size': 'x',
-        'alt_sizes': 'x'
-    },{
-        'link_url': 'xx',
-        'source_url': '',
-        'id': str( random.randint(1,999999) ),
-        'original_size': 'xx',
-        'preview_size': 'x',
-        'alt_sizes': 'x'
-    },{
-        'link_url': 'xx',
-        'source_url': '',
-        'id': str( random.randint(1,999999) ),
-        'original_size': 'xx',
-        'preview_size': 'x',
-        'alt_sizes': 'x'
-    },{
-        'link_url': 'xx',
-        'source_url': '',
-        'id': str( random.randint(1,999999) ),
-        'original_size': 'xx',
-        'preview_size': 'x',
-        'alt_sizes': 'x'
-    }]
+    dashboard = tumblr.dashboard( param['dashboard_param'] )
+    imgList = mkMainDict( dashboard, param['preview_size'], param['alt_sizes'] )
+
+    # imgList = [{
+    #     'link_url': 'xx',
+    #     'source_url': '',
+    #     'id': str( random.randint(1,999999) ),
+    #     'original_size': 'xx',
+    #     'preview_size': 'x',
+    #     'alt_sizes': 'x'
+    # },{
+    #     'link_url': 'xx',
+    #     'source_url': '',
+    #     'id': str( random.randint(1,999999) ),
+    #     'original_size': 'xx',
+    #     'preview_size': 'x',
+    #     'alt_sizes': 'x'
+    # },{
+    #     'link_url': 'xx',
+    #     'source_url': '',
+    #     'id': str( random.randint(1,999999) ),
+    #     'original_size': 'xx',
+    #     'preview_size': 'x',
+    #     'alt_sizes': 'x'
+    # },{
+    #     'link_url': 'xx',
+    #     'source_url': '',
+    #     'id': str( random.randint(1,999999) ),
+    #     'original_size': 'xx',
+    #     'preview_size': 'x',
+    #     'alt_sizes': 'x'
+    # },{
+    #     'link_url': 'xx',
+    #     'source_url': '',
+    #     'id': str( random.randint(1,999999) ),
+    #     'original_size': 'xx',
+    #     'preview_size': 'x',
+    #     'alt_sizes': 'x'
+    # }]
     imgListQ.put( imgList )
     # eachImgList( imgList )
     postMessage(f_hwnd, loadImgListMsg, 0, 0)
@@ -105,7 +137,7 @@ class TumblrCtrl(object):
 
     def getDashboards(self):
         self.setTumblrLi()
-        Process(target = asyncLoadTumblr, args = ( self.imgListQ, self.Gui_HWND )).start()
+        Process(target = asyncLoadTumblr, args = ( self.imgListQ, self.Gui_HWND, self.tumblr, self.cfg )).start()
 
     def eachImgList(self, img_list ):
         print('eachImgList')
@@ -129,8 +161,10 @@ class TumblrCtrl(object):
             else:
                 # html = htmlTemplate.format( d['id'], file_path, d['original_size'], d['preview_size'] )
                 # self.call_function('appendImgList', html )
+                self.setImgBg(d['id'], file_path)
                 pass
-        Process(target = asyncImgList, args = ( self.imgDoneQ, tasks, self.Gui_HWND )).start()
+        if tasks:
+            Process(target = asyncImgList, args = ( self.imgDoneQ, tasks, self.Gui_HWND, self.proxies )).start()
         return
 
     def setImgBg(self, id, fpath):

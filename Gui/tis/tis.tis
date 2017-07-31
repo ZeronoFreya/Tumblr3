@@ -1,7 +1,7 @@
 ﻿include "common.tis";
 self.ready = function() {
     //设置窗口居中
-    setWinToCenter();
+    setWinToCenter(1480);
     view.windowTopmost = true;
     // var h = $(header).box(#height, #border, #view);
     // setMinSize( 320,197.76 );
@@ -25,7 +25,10 @@ function appendImgLoading( html ){
 }
 function setImgId( id, i ){
     // stdout.println(id, i);
-    $(li.loading[imgid="{i}"]).@#imgid = id;
+    var li = $(li.loading[imgid="{i}"]);
+    if(li){
+        li.@#imgid = id;
+    }
     // li.@#imgid = id;
     // li.@.removeClass("loading");
 }
@@ -33,6 +36,10 @@ function setImgBg( id, path ){
     // stdout.println(id, path);
     var li = $(li[imgid="{id}"]);
     // stdout.println(li);
-    li.text = id;
-    li.@.removeClass("loading");
+    if(li){
+        li.text = id;
+        li.post( ::this.style#background-image = "url(" + path + ")" );
+        li.@.removeClass("loading");
+    }
+
 }
