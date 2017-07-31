@@ -1,8 +1,7 @@
-/__pycache__/
-/download/
-/imgTemp/
+/__pycache__
+/download
+/imgTemp
 .gitignore
 tumblr_credentials.json
 tumblr.sublime-project
 tumblr.sublime-workspace
-*.pyc

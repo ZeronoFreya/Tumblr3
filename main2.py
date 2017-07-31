@@ -49,19 +49,18 @@ class Frame(sciter.Window):
 
     def _document_ready(self, target):
         return
-        self.tumblrCtrl = TumblrCtrl({
-            'call'          : self.call_function,
-            'cfg'           : self.cfg,
-            'Gui_HWND'      : self.hwnd,
-            'target_folder' : self.target_folder
-        })
-        self.tumblrCtrl.getDashboards()
 
     def on_message(self, hwnd, msg, wparam, lparam):
         if msg == loadImgListMsg:
             print("loadImgListMsg")
             try:
-                d = self.tumblrCtrl.imgListQ.get()
+                d = []
+                i = 0
+                while i < self.cfg['tumblr']['dashboard_param']['limit']:
+                    d.append( self.tumblrCtrl.imgListQ.get() )
+                    i += 1
+                # d = self.tumblrCtrl.imgListQ.get()
+                print(d)
                 return self.tumblrCtrl.eachImgList( d )
             except Exception as e:
                 raise e
@@ -77,6 +76,8 @@ class Frame(sciter.Window):
 
     def document_close(self):
         print("close")
+        while not self.tumblrCtrl.imgListQ.empty():
+            self.tumblrCtrl.imgListQ.get()
         return True
 
 
