@@ -11,6 +11,7 @@ aside{
     padding-top: 32dip;
     padding-bottom: 32dip;
     background: @BGCOLOR-WHITE;
+    overflow-y: hidden;
 }
 aside2:hover{
     width:100dip;
@@ -42,9 +43,11 @@ main{
     border-radius: 5dip;
     overflow: hidden;
 }
+
 #sites-nav label:current{
     height: width(200%);
 }
+
 #sites-panel{
     flow: stack;
     overflow: hidden;
@@ -83,6 +86,17 @@ main{
 #sites-panel > panel:animating {
     z-index: 2;
     visibility: visible;
+}
+#tumblr{
+    position: relative;
+}
+#tumblr-homepage{
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    bottom: 0;
+    /*background: gold;*/
 }
 #ul {
     /*prototype: UlCtrl url("ulctrl.tis");*/

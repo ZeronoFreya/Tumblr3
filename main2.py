@@ -44,8 +44,10 @@ class Frame(sciter.Window):
         self.download_folder = osPath.join(self.current_folder, 'download')
         if not osPath.isdir(self.download_folder):
             osMkdir(self.download_folder)
+        # print(self.cfg)
 
     def _document_ready(self, target):
+        return
         self.tumblrCtrl = TumblrCtrl({
             'call'          : self.call_function,
             'cfg'           : self.cfg,
@@ -81,6 +83,13 @@ class Frame(sciter.Window):
 
     def loadTumblr(self):
         print('loadTumblr')
+        if not self.tumblrCtrl:
+            self.tumblrCtrl = TumblrCtrl({
+                'call'          : self.call_function,
+                'cfg'           : self.cfg,
+                'Gui_HWND'      : self.hwnd,
+                'target_folder' : self.target_folder
+            })
         self.tumblrCtrl.getDashboards()
         pass
 

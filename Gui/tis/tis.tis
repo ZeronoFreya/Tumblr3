@@ -15,10 +15,16 @@ self.ready = function() {
     //     ul.$append(<li>{i}</li>);
     // }
     // ul.postEvent("is-scroll");
-    // $(#tumblr).on("click",function(){
-        // view.loadTumblr();
-    // })
+    $(#load-tumblr).on("click",function(){
+        view.loadTumblr();
+    })
     // $(li[imgid="163313406078[1]"]).text = "1234";
+    // $(aside).state.expanded = true;
+    // $(labels#sites-nav).on("click","label",function(){
+    //     if( this.@.hasClass("active") ){
+
+    //     }
+    // });
 }
 function appendImgLoading( html ){
     self.$(#ul).append(html);
