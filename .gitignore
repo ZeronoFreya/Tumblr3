@@ -3,6 +3,3 @@ download/
 imgTemp/
 .gitignore
 tumblr_credentials.json
-tumblr.sublime-project
-tumblr.sublime-workspace
-__pycache__/tumblrctrl.cpython-36.pyc
