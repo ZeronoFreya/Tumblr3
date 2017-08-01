@@ -103,13 +103,13 @@ main{
     width: 0;
 }
 #ul {
-    /*prototype: UlCtrl url("ulctrl.tis");*/
+    prototype: UlCtrl url("../tis/ulctrl.tis");
     flow: horizontal-wrap;
     border-spacing: 10dip;
     size: *;
     overflow: hidden;
-    overflow-y: scroll-indicator;
-    /*overflow-y: scroll;*/
+    /*overflow-y: scroll-indicator;*/
+    overflow-y: scroll;
     /*overflow-y: scroll scroll-manner(wheel-animation:false, wheel-step:@list-h);*/
     /*overflow-y: scroll scroll-manner(wheel-animation:false);*/
 

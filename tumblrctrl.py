@@ -20,7 +20,7 @@ loadtest = WM_USER+30
 def asyncImgList(imgDoneQ, t, f_hwnd, proxies):
     '''协程下载列表中图片'''
     async def stream_download( client, imgDoneQ, d, f_hwnd, prox ):
-        async with client.get( d['http'], proxy='http://127.0.0.1:50175', timeout=10 ) as response:
+        async with client.get( d['http'], proxy='http://127.0.0.1:61274', timeout=10 ) as response:
             if response.status != 200:
                 print('error')
                 return
@@ -75,7 +75,9 @@ def asyncLoadTumblr(imgListQ, f_hwnd, tumblr, param):
     print(p)
     # dashboard = tumblr.dashboard( param['dashboard_param'] )
     dashboard = tumblr.posts('kuvshinov-ilya.tumblr.com', None, p)
-
+    if not dashboard:
+        return
+    param['dashboard_param']['offset'] += p['limit']
     imgList = mkMainDict( dashboard, param['preview_size'], param['alt_sizes'] )
     # imgList = [{
     #     'link_url': 'xx',
